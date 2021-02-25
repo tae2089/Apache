@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    
+    <script>
+        var data=[1,2,3,4,5];
+        var k = 1;
+        function render(data){
+        var p = d3.select("body").selectAll("p").data(data)
+            .text(function(d){return d;})
+            p.enter().append("p")
+            .text(function(d){return d;});
+            p.exit().remove();
+        k++;
+        setTimeout(function(){render([k,12,13]);},50);      
+    } 
+    render(data);   
+    
+</script>
+</body>
+</html>
