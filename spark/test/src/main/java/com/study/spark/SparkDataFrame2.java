@@ -7,10 +7,14 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import org.apache.spark.SparkConf;
+import org.apache.spark.sql.Column;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.RowFactory;
 import org.apache.spark.sql.SparkSession;
+import org.apache.spark.sql.functions;
+
+import static org.apache.spark.sql.functions.col;
 
 import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.StructField;
@@ -23,12 +27,13 @@ public class SparkDataFrame2 {
         SparkConf conf = new SparkConf().setMaster("local");
         conf.set("spark.serializer", "org.apache.spark.serializer.KryoSerializer");
         SparkSession spark = SparkSession.builder().appName("Java Spark SQL basic example").config(conf).getOrCreate();
-    
+        
+        //컬럼 만들기
         StructType schema = DataTypes.createStructType(new StructField[]{
                 DataTypes.createStructField("NAME", DataTypes.StringType, false), 
                 DataTypes.createStructField("AGE", DataTypes.IntegerType, false)
         });
-    
+        //데이터 담을 ROW List만들기
         List<Row> rows = new ArrayList<>();
         //ROW를 만들때에는 RowFactory를 사용해서 만들면 된다.
         Row r1 = RowFactory.create("name1", 1);
@@ -39,8 +44,12 @@ public class SparkDataFrame2 {
 
         Dataset<Row> ds = spark.createDataFrame(rows, schema);
         ds.show();
-
-        //datatype 변형해보기 및 컬럼 추가해보기
         
+        //datatype 변형해보기 및 컬럼 추가해보기
+        //withColumn을 사용해서 바꿔보기
+        ds.withColumn("Test", ds.col("AGE").plus(1)).show(false);
+        
+        //select
+        ds.select(ds.col("AGE").$greater$eq(1)).show();
     }
 }
