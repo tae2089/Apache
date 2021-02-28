@@ -7,18 +7,16 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import org.apache.spark.SparkConf;
-import org.apache.spark.sql.Column;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.RowFactory;
 import org.apache.spark.sql.SparkSession;
-import org.apache.spark.sql.functions;
 
-import static org.apache.spark.sql.functions.col;
 
 import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.StructField;
 import org.apache.spark.sql.types.StructType;
+
 
 public class SparkDataFrame2 {
     public static void main(String[] args) {
@@ -46,9 +44,10 @@ public class SparkDataFrame2 {
         ds.show();
         
         //datatype 변형해보기 및 컬럼 추가해보기
+        ds.withColumn("Test", ds.col("AGE").cast(DataTypes.DoubleType)).show(false);
+
         //withColumn을 사용해서 바꿔보기
         ds.withColumn("Test", ds.col("AGE").plus(1)).show(false);
-        
         //select
         ds.select(ds.col("AGE").$greater$eq(1)).show();
     }
