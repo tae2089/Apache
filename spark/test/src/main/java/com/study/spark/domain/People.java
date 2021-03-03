@@ -1,6 +1,11 @@
 package com.study.spark.domain;
 
+import java.io.Serializable;
 import java.math.BigInteger;
+
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @SuppressWarnings("serial")
 @Data

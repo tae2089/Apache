@@ -29,6 +29,8 @@ implementation group: 'org.apache.spark', name: 'spark-core_2.12', version: '3.0
 implementation group: 'org.apache.spark', name: 'spark-sql_2.12', version: '3.0.0-preview2'
 // https://mvnrepository.com/artifact/org.apache.spark/spark-mllib
 implementation group: 'org.apache.spark', name: 'spark-mllib_2.12', version: '3.0.0-preview2'
+// https://mvnrepository.com/artifact/org.apache.spark/spark-streaming
+compileOnly group: 'org.apache.spark', name: 'spark-streaming_2.12', version: '3.0.0-preview2'
 // https://mvnrepository.com/artifact/org.projectlombok/lombok
 compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.18'
 
