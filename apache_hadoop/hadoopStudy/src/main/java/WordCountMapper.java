@@ -8,7 +8,7 @@ import java.util.StringTokenizer;
 
 
 public class WordCountMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
-    private static final IntWritable one = new IntWritable();
+    private static final IntWritable one = new IntWritable(1);
     private Text word = new Text();
 
     public void map(LongWritable key, Text value, Context context) throws IOException,InterruptedException{

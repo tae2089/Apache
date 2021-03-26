@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class WordCountReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
     //결과값 저장할 곳
-    private IntWritable result = new IntWritable();
+    private IntWritable result = new IntWritable(1);
 
     public void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException{
         int sum = 0;
