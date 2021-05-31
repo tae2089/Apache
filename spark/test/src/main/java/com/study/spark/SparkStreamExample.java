@@ -39,7 +39,5 @@ public class SparkStreamExample {
             ssc.stop();
             ssc.close();
         }
-        
-
     }
 }

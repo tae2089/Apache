@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@SuppressWarnings("serial")
+
 @Data
 @NoArgsConstructor
 public class Person implements Serializable {

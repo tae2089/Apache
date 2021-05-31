@@ -21,17 +21,17 @@ public class SparkDataFrame {
         conf.set("spark.serializer", "org.apache.spark.serializer.KryoSerializer");
         SparkSession spark = SparkSession.builder().appName("Java Spark SQL basic example")
                 .config(conf).getOrCreate();
-                
+
         Dataset<Row> df = spark.read().json("./resource/people.json");
         df.show();
         df.printSchema();
 
         List<Person> personlist = new ArrayList<>();
-        Person person1 = Person.builder().age(11).name("taebin").build();
+        Person person1 = Person.builder().age(11).name("ssss").build();
         Person person2 = Person.builder().age(12).name("youjong").build();
         personlist.add(person1);
         personlist.add(person2);
-        
+
 
     }
 }
