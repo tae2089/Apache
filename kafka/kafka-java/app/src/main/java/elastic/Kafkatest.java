@@ -1,9 +1,9 @@
-package test;
+package elastic;
 
 import java.util.Properties;
 import java.util.Scanner;
 
-import org.apache.commons.lang3.StringUtils;
+
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -39,10 +39,10 @@ public class Kafkatest {
                 producer.flush();
             }
 
-            if(StringUtils.equals(message, FIN_MESSAGE)) {
-                producer.close();
-                break;
-            }
+//            if(StringUtils.equals(message, FIN_MESSAGE)) {
+//                producer.close();
+//                break;
+//            }
         }
     }
 }
