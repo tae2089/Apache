@@ -1,16 +1,12 @@
 package kafka.api;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Properties;
+import java.util.*;
 
 
 import lombok.Data;
-import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.clients.consumer.ConsumerRecords;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.clients.consumer.*;
+import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.slf4j.Logger;
@@ -39,7 +35,7 @@ public class Consumer <V>{
 	}
 
 
-	public ArrayList<V> getMessage(){
+	public ArrayList<V> getMessageBySync(){
 		this.consumer.subscribe(Collections.singletonList(this.topic));
 		 ArrayList<V> messageList = new ArrayList<>();
 		try {
@@ -49,6 +45,7 @@ public class Consumer <V>{
 					logger.info("{}",message);
 					messageList.add(message);
 				}
+				consumer.commitSync();
 			return messageList;
 		} catch(Exception e) {
 			// exception
@@ -56,6 +53,84 @@ public class Consumer <V>{
 			return null;
 		}
 	}
+
+	public ArrayList<V> getMessageBySyncCustom(){
+		this.consumer.subscribe(Collections.singletonList(this.topic));
+		ArrayList<V> messageList = new ArrayList<>();
+		try {
+			ConsumerRecords<String, V> records = consumer.poll(Duration.ofMillis(100000));
+			Map<TopicPartition, OffsetAndMetadata> currentOffset = new HashMap<>();
+			for (ConsumerRecord<String, V> record : records) {
+				V message = record.value();
+				logger.info("{}",message);
+				messageList.add(message);
+				currentOffset.put(new TopicPartition(record.topic(),record.partition())
+													,new OffsetAndMetadata(record.offset()+1,null));
+				consumer.commitSync(currentOffset);
+			}
+			return messageList;
+		} catch(Exception e) {
+			// exception
+			logger.info(e.getMessage());
+			return null;
+		}
+	}
+
+	public ArrayList<V> getMessageByAsync(){
+		this.consumer.subscribe(Collections.singletonList(this.topic));
+		ArrayList<V> messageList = new ArrayList<>();
+		try {
+			ConsumerRecords<String, V> records = consumer.poll(Duration.ofMillis(100000));
+			for (ConsumerRecord<String, V> record : records) {
+				V message = record.value();
+				logger.info("{}",message);
+				messageList.add(message);
+			}
+			consumer.commitAsync();
+			return messageList;
+		} catch(Exception e) {
+			// exception
+			logger.info(e.getMessage());
+			return null;
+		}
+	}
+
+
+	public ArrayList<V> getMessageByAsyncCustom(){
+		this.consumer.subscribe(Collections.singletonList(this.topic));
+		ArrayList<V> messageList = new ArrayList<>();
+		try {
+			ConsumerRecords<String, V> records = consumer.poll(Duration.ofMillis(100000));
+			for (ConsumerRecord<String, V> record : records) {
+				V message = record.value();
+				logger.info("{}",message);
+				messageList.add(message);
+			}
+			consumer.commitAsync(new OffsetCommitCallback() {
+				@Override
+				public void onComplete(Map<TopicPartition, OffsetAndMetadata> offsets, Exception e) {
+					if(e != null){
+						logger.error("Commit Failed");
+						logger.error("Commit faild for offsets {}", offsets, e);
+					} else{
+						logger.info("Commit Succeeded");
+					}
+				}
+			});
+			return messageList;
+		} catch(Exception e) {
+			// exception
+			logger.info(e.getMessage());
+			return null;
+		}
+	}
+
+
+
+
+
+
+
 
 	public void close(){
 		this.consumer.close();
