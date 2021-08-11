@@ -1,5 +1,6 @@
-package elastic;
+package kafka.api;
 
+import lombok.Data;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.DescribeConfigsResult;
 import org.apache.kafka.clients.admin.TopicDescription;
@@ -12,9 +13,9 @@ import org.slf4j.LoggerFactory;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Properties;
-import java.util.concurrent.ExecutionException;
 
 
+@Data
 public class Admin {
 
     private static final String BOOTSTRAP_SERVERS_CONFIG = "";
